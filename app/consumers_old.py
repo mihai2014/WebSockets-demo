@@ -42,54 +42,14 @@ class AsyncEchoConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.n  = 0
-
-        self.group_name = "mygroup"
-
-        # Join group
-        await self.channel_layer.group_add(
-            self.group_name,
-            self.channel_name
-        )        
-
         await self.accept()
         await self.send(text_data='connected')
 
     async def receive(self, *, text_data):
         self.n += 1
         print(text_data)
-
-        #this below will send message only to the sender socket not to group
-        #await self.send(text_data="echo: "+ str(self.n) + " " + text_data)
-
-        # Send message to group
-        await self.channel_layer.group_send(
-            self.group_name,
-            {
-                'type': 'group_message',  #this is sending pocedure name
-                'message': text_data,
-                'n': self.n
-            }
-        )
-  
-    # Sending message to group
-    async def group_message(self, event):
-        message = event['message']
-        n = event['n']
-
-        await self.send(text_data="echo: "+ str(n) + " " + message)
-
+        await self.send(text_data="echo: "+ str(self.n) + " " + text_data)
 
     async def disconnect(self, message):
-
-        # Leave group
-        await self.channel_layer.group_discard(
-            self.group_name,
-            self.channel_name
-        )
-
-        print('disconnect')
-
-
-
-
+        print('diconnect')
 

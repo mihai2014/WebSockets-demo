@@ -10,7 +10,9 @@
 <body>
     <h1>Hello, WebSockets!</h1>
 
-    <textarea id="display" rows="10" cols="50"></textarea>
+    <textarea id="display" rows="10" cols="30"></textarea>
+    <textarea id="display2" rows="10" cols="30"></textarea>
+    <textarea id="display3" rows="10" cols="30"></textarea>
 
     <p class="text-center">Server time: <span id="clock"></span></p>
 
@@ -55,6 +57,37 @@
         document.querySelector('#submit').onclick = function(e) {
             echoSocket.send("hello!");      
         }
+
+
+
+        //echo2
+        const echoSocket2 = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/echo2/'
+        );
+
+        echoSocket2.onmessage = function(e) {
+            textarea = document.querySelector('#display2');
+            textarea.value += (e.data + '\n');
+            //scroll to end
+            textarea.scrollTop = textarea.scrollHeight;
+        };  
+
+
+        //echo3
+        const echoSocket3 = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/echo3/'
+        );
+
+        echoSocket3.onmessage = function(e) {
+            textarea = document.querySelector('#display3');
+            textarea.value += (e.data + '\n');
+            //scroll to end
+            textarea.scrollTop = textarea.scrollHeight;
+        };          
 
 
     </script>
